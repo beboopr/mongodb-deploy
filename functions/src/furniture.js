@@ -45,11 +45,13 @@ export async function updateFurniture(req, res) {
 const db = dbConnect()
 const {furnitureId } = req.params
 await db.collection('furniture')
-//"6351a743de509c91461525f6"
+
 .findOneAndUpdate ({ _id: new ObjectId(furnitureId) }, { $set: req.body })
 .catch(err => {
     res.status(500).send(err)
     return
 })
+// send back the array of furniture
+res.set('Cache-control', 'public, max-age=300, s-maxage=600')
 res.status(202).send({message: "updated furniture"})
   }
